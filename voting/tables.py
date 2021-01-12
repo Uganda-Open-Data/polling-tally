@@ -4,7 +4,7 @@ from .models import Pollingstation, District, County, Subcounty, Parish
 
 class BaseMetaClass:
     abstract = True
-    attrs = {"class": "table table-striped table-responsive"}
+    attrs = {"class": "table table-striped table-responsive table-bordered"}
 
 
 class PollingStationTable(tables.Table):

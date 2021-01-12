@@ -1,7 +1,7 @@
 from voting.models import (
     District, County, Subcounty, Parish, Pollingstation
 )
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import DetailView, View
 from voting.forms import (
     PollingStationDataUploadForm, PollingCandidateDataUploadForm
 )
@@ -22,7 +22,7 @@ from voting.filters import (
 )
 
 
-class DistrictListView(ListView):
+class DistrictListView(SingleTableMixin, FilterView):
     model = District
     template_name = 'voting/districts/all.html'
     filterset_class = DistrictFilter
@@ -48,7 +48,7 @@ class DistrictDetailView(DetailView):
         return context
 
 
-class CountyListView(ListView):
+class CountyListView(SingleTableMixin, FilterView):
     model = County
     template_name = 'voting/counties/all.html'
     filterset_class = CountyFilter
@@ -74,7 +74,7 @@ class CountyDetailView(DetailView):
         return context
 
 
-class SubcountyListView(ListView):
+class SubcountyListView(SingleTableMixin, FilterView):
     model = Subcounty
     template_name = 'voting/sub-counties/all.html'
     filterset_class = SubcountyFilter
@@ -100,7 +100,7 @@ class SubcountyDetailView(DetailView):
         return context
 
 
-class ParishListView(ListView):
+class ParishListView(SingleTableMixin, FilterView):
     model = Parish
     template_name = 'voting/parishes/all.html'
     filterset_class = ParishFilter
