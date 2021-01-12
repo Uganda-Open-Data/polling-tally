@@ -12,6 +12,9 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User
 from voting.tables import PollingStationTable
 from django_tables2 import RequestConfig
+from django_tables2.views import SingleTableMixin
+from django_filters.views import FilterView
+from voting.filters import PollingStationFilter
 
 
 class DistrictListView(ListView):
@@ -94,16 +97,19 @@ class ParishDetailView(DetailView):
         return context
 
 
-class PollingstationListView(ListView):
+class PollingstationListView(SingleTableMixin, FilterView):
     model = Pollingstation
     template_name = 'voting/polling-stations/all.html'
-    table = PollingStationTable(data=Pollingstation.objects.all())
+    filterset_class = PollingStationFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Polling Stations'
-        RequestConfig(self.request, paginate={"per_page": 50}).configure(self.table)
-        context['table'] = self.table
+        data = Pollingstation.objects.all()
+        ps_filter = PollingStationFilter(self.request.GET, queryset=data)
+        data = PollingStationTable(ps_filter.qs)
+        RequestConfig(self.request, paginate={"per_page": 18}).configure(data)
+        context['table'] = data
         return context
 
 
