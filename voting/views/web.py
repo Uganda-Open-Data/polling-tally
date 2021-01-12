@@ -10,6 +10,8 @@ from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User
+from voting.tables import PollingStationTable
+from django_tables2 import RequestConfig
 
 
 class DistrictListView(ListView):
@@ -95,10 +97,13 @@ class ParishDetailView(DetailView):
 class PollingstationListView(ListView):
     model = Pollingstation
     template_name = 'voting/polling-stations/all.html'
+    table = PollingStationTable(data=Pollingstation.objects.all())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Polling Stations'
+        RequestConfig(self.request, paginate={"per_page": 50}).configure(self.table)
+        context['table'] = self.table
         return context
 
 
