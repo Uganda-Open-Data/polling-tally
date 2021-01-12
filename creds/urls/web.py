@@ -1,9 +1,9 @@
 from django.urls import path
-from creds.views.web import login, signup, reset_password
+from creds.views.web import login, reset_password, UserSignUp
 
 
 urlpatterns = [
     path('', login, name='login'),
-    path('signup', signup, name='signup'),
+    path('signup', UserSignUp.as_view(), name='signup'),
     path('reset-password', reset_password, name="reset-password")
 ]
