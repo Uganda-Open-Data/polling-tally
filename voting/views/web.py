@@ -10,20 +10,31 @@ from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User
-from voting.tables import PollingStationTable
+from voting.tables import (
+    PollingStationTable, DistrictTable, CountyTable, SubcountyTable, ParishTable
+)
 from django_tables2 import RequestConfig
 from django_tables2.views import SingleTableMixin
 from django_filters.views import FilterView
-from voting.filters import PollingStationFilter
+from voting.filters import (
+    DistrictFilter, CountyFilter, SubcountyFilter,
+    ParishFilter, PollingStationFilter
+)
 
 
 class DistrictListView(ListView):
     model = District
     template_name = 'voting/districts/all.html'
+    filterset_class = DistrictFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Districts'
+        data = District.objects.all()
+        d_filter = DistrictFilter(self.request.GET, queryset=data)
+        data = DistrictTable(d_filter.qs)
+        RequestConfig(self.request, paginate={"per_page": 18}).configure(data)
+        context['table'] = data
         return context
 
 
@@ -40,10 +51,16 @@ class DistrictDetailView(DetailView):
 class CountyListView(ListView):
     model = County
     template_name = 'voting/counties/all.html'
+    filterset_class = CountyFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Counties'
+        data = County.objects.all()
+        c_filter = CountyFilter(self.request.GET, queryset=data)
+        data = CountyTable(c_filter.qs)
+        RequestConfig(self.request, paginate={"per_page": 18}).configure(data)
+        context['table'] = data
         return context
 
 
@@ -60,10 +77,16 @@ class CountyDetailView(DetailView):
 class SubcountyListView(ListView):
     model = Subcounty
     template_name = 'voting/sub-counties/all.html'
+    filterset_class = SubcountyFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Sub Counties'
+        data = Subcounty.objects.all()
+        ps_filter = SubcountyFilter(self.request.GET, queryset=data)
+        data = SubcountyTable(ps_filter.qs)
+        RequestConfig(self.request, paginate={"per_page": 18}).configure(data)
+        context['table'] = data
         return context
 
 
@@ -80,10 +103,16 @@ class SubcountyDetailView(DetailView):
 class ParishListView(ListView):
     model = Parish
     template_name = 'voting/parishes/all.html'
+    filterset_class = ParishFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Parishes'
+        data = Parish.objects.all()
+        ps_filter = ParishFilter(self.request.GET, queryset=data)
+        data = ParishTable(ps_filter.qs)
+        RequestConfig(self.request, paginate={"per_page": 18}).configure(data)
+        context['table'] = data
         return context
 
 

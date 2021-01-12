@@ -32,21 +32,21 @@ class County(LocaleBaseModel):
     district = models.ForeignKey('District', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name + ' IN ' + self.district.name + ' DISTRICT'
 
 
 class Subcounty(LocaleBaseModel):
     county = models.ForeignKey('County', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name + ' IN ' + self.county.name + ' IN ' + self.county.district.name + ' DISTRICT'
 
 
 class Parish(LocaleBaseModel):
     subcounty = models.ForeignKey('Subcounty', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name + ' IN ' + self.subcounty.name + ' IN ' + self.subcounty.county.name + ' IN ' + self.subcounty.county.district.name + ' DISTRICT'
 
 
 class Pollingstation(BaseModel):
@@ -57,5 +57,4 @@ class Pollingstation(BaseModel):
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True),
 
     def __str__(self):
-        return self.name
-
+        return self.name + ' IN ' + self.county.name + ' - ' + self.county.district.name + ' DISTRICT'
