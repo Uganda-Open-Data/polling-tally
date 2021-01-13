@@ -58,3 +58,14 @@ class Pollingstation(BaseModel):
 
     def __str__(self):
         return self.name + ' IN ' + self.county.name + ' - ' + self.county.district.name + ' DISTRICT'
+
+
+class ElectionCandidates(BaseModel):
+    county = models.ForeignKey('County', on_delete=models.CASCADE)
+    party = models.CharField(max_length=32, null=True)
+    symbol = models.CharField(max_length=32, null=True)
+    status = models.CharField(max_length=32, null=True)
+    category = models.CharField(max_length=32, null=True)
+
+    def __str__(self):
+        return self.name + ' FOR ' + self.county.name + ' - ' + self.county.district.name + ' DISTRICT'

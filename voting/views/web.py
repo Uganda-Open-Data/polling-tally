@@ -159,7 +159,6 @@ class PollingStationDataUploadView(View):
         return render(request, 'voting/polling-station-dataupload.html', context)
 
     def post(self, request):
-        print(request)
         try:
             file = request.FILES['file']
             if (str(file).split('.')[-1] == "xls"):
@@ -228,7 +227,32 @@ class PollingCandidatesDataUploadView(View):
         return render(request, 'voting/polling-candidate-upload.html', context)
 
     def post(self, request):
-        pass
+        try:
+            file = request.FILES['file']
+            if (str(file).split('.')[-1] == "xls"):
+                data = xls_get(file, column_limit=12)
+            elif (str(file).split('.')[-1] == "xlsx"):
+                data = xlsx_get(file, column_limit=12)
+            else:
+                return redirect('/candidates')
+            # admin_user = User.objects.get(pk=1)
+            # The data is in a sheet called main
+            excel_data = data['main']
+            clean_data = excel_data[1:]
+            iterator = 0
+            for row in clean_data:
+                print(row)
+                iterator += 1
+                if (len(row) > 0):
+                    pass
+                    # can't use unpackng and symbol for come candidates are empty
+                    # category, district, district_code, county, county_code, candidate, party, status, symbol = row
+
+                if iterator == 10:
+                    break
+        except MultiValueDictKeyError:
+            print('Exception caught')
+            return redirect('/candidates')
 
 
 def show_all_candidates(request):
