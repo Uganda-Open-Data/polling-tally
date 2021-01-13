@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
 
 
 class CredsTestCate(TestCase):
@@ -15,6 +16,20 @@ class CredsTestCate(TestCase):
         self.assertEquals(r.status_code, 200)
         self.assertTemplateUsed('signup.html')
         self.assertInHTML('<title>Signup</title>', page_content)
+
+    def test_sign_up_page_creates_user_and_redirects_to_login(self):
+        r = self.client.post(
+            '/signup', data={
+                'email': 'john.doe@example.com',
+                'username': 'johndoe',
+                'password1': 'lgBGASI43@#',
+                'password2': 'lgBGASI43@#'
+            }
+        )
+        user_exists = User.objects.filter(email='john.doe@example.com').exists()
+        self.assertEquals(r.status_code, 200)
+        self.assertTemplateUsed('login.html')
+        self.assertTrue(user_exists)
 
     def test_reset_password_page_setup(self):
         r = self.client.get('/reset-password')

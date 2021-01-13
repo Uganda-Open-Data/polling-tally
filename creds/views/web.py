@@ -20,7 +20,6 @@ class UserSignUp(View):
             context = {'form': CreateUserForm(), 'sign_up_errors': form.errors}
             return render(request, 'creds/signup.html', context)
 
-        # create use if form is valid
         user = User.objects.create_user(
             form.cleaned_data.get('username'), form.cleaned_data.get('email'), form.cleaned_data.get('password1'))
         user.is_active = False
