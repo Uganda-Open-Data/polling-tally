@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login
 from creds.forms import (
     CreateUserForm, UserPassResetForm, UserLoginForm
 )
@@ -28,10 +29,23 @@ class UserSignUp(View):
         return render(request, 'creds/login.html', {'form': UserLoginForm()})
 
 
-def login(request):
-    form = UserLoginForm()
-    context = {'form': form}
-    return render(request, 'creds/login.html', context)
+class UserLogin(View):
+    def get(self, request):
+        context = {'form': UserLoginForm()}
+        return render(request, 'creds/login.html', context)
+
+    def post(self, request):
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username", "")
+            password = form.cleaned_data.get("password", "")
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+            return redirect('voting:dashboard')
+        else:
+            context = {'form': form, 'login_errors': form.errors}
+            return render(request, 'creds/login.html', context)
 
 
 def reset_password(request):

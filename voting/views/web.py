@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from voting.tables import (
     PollingStationTable, DistrictTable, CountyTable, SubcountyTable, ParishTable
@@ -244,6 +245,11 @@ class PollingCandidatesDataUploadView(View):
         except MultiValueDictKeyError:
             print('Exception caught')
             return redirect('/candidates')
+
+
+class DashboardView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'voting/dashboard')
 
 
 def show_all_candidates(request):
