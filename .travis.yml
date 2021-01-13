@@ -7,13 +7,13 @@ python:
   - "3.9"
 install: 
   - pip install -r requirements.txt
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+# before_script:
+#   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+#   - chmod +x ./cc-test-reporter
+#   - ./cc-test-reporter before-build
 # script:
-#   # - coverage run manage.py test
-#   # - coverage xml
+#   - coverage run manage.py test
+#   - coverage xml
 # after_script:
 #   - ./cc-test-reporter format-coverage -t coverage.py
 #   - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi 
