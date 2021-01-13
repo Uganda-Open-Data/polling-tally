@@ -1,1 +1,1 @@
-web: gunicorn polling/wsgi.pu
+web: gunicorn polling.wsgi
