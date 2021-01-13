@@ -31,6 +31,14 @@ class CredsTestCate(TestCase):
         self.assertTemplateUsed('login.html')
         self.assertTrue(user_exists)
 
+    def test_login_page_uses_correct_template(self):
+        r = self.client.get('/login')
+        page_content = r.content.decode('utf8')
+        self.assertEquals(r.status_code, 200)
+        self.assertTemplateUsed('login.html')
+        self.assertInHTML('<title>Logi</title>', page_content)
+
+    
     def test_reset_password_page_setup(self):
         r = self.client.get('/reset-password')
         page_content = r.content.decode('utf8')
