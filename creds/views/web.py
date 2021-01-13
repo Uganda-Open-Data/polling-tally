@@ -4,8 +4,7 @@ from creds.forms import (
 )
 from django.views import View
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-import logging
+
 
 class UserSignUp(View):
     """
@@ -22,9 +21,11 @@ class UserSignUp(View):
             return render(request, 'creds/signup.html', context)
 
         # create use if form is valid
-        User.objects.create_user(
+        user = User.objects.create_user(
             form.cleaned_data.get('username'), form.cleaned_data.get('email'), form.cleaned_data.get('password1'))
-        return HttpResponse('User created.')
+        user.is_active = False
+        user.save()
+        return render(request, 'creds/login.html', {'form': UserLoginForm()})
 
 
 def login(request):
