@@ -18,6 +18,7 @@ pyexcel-xls==0.6.2
 pyexcel-xlsx==0.6.0
 pyflakes==2.2.0
 pylint==2.6.0
+python-dotenv==0.15.0
 pytz==2020.5
 six==1.15.0
 soupsieve==2.1
