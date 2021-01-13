@@ -20,7 +20,8 @@ from voting.filters import (
     DistrictFilter, CountyFilter, SubcountyFilter,
     ParishFilter, PollingStationFilter
 )
-
+import pandas as pd
+import numpy as np
 
 class DistrictListView(SingleTableMixin, FilterView):
     model = District
@@ -229,26 +230,16 @@ class PollingCandidatesDataUploadView(View):
     def post(self, request):
         try:
             file = request.FILES['file']
-            if (str(file).split('.')[-1] == "xls"):
-                data = xls_get(file, column_limit=12)
-            elif (str(file).split('.')[-1] == "xlsx"):
-                data = xlsx_get(file, column_limit=12)
-            else:
-                return redirect('/candidates')
-            # admin_user = User.objects.get(pk=1)
-            # The data is in a sheet called main
-            excel_data = data['main']
-            clean_data = excel_data[1:]
-            iterator = 0
-            for row in clean_data:
+            file_data = file.read()
+            excel_data = pd.read_excel(file_data)
+            clean_data = excel_data.replace(np.NaN, '#')
+            print(clean_data)
+            itera = 0
+            for row in clean_data.values:
                 print(row)
-                iterator += 1
-                if (len(row) > 0):
-                    pass
-                    # can't use unpackng and symbol for come candidates are empty
-                    # category, district, district_code, county, county_code, candidate, party, status, symbol = row
-
-                if iterator == 10:
+                print(len(row))
+                itera +=1
+                if itera == 10:
                     break
         except MultiValueDictKeyError:
             print('Exception caught')
