@@ -10,6 +10,7 @@
 ## How to set up
 1. Set up a virtual env with python >= 3.9.1 and activate it
 1. Run `pip install -r requirements.tx` to install the dependencies
+1. Create `.env` file using the `.env_example` as an example.   
 1. Run `python manage.py run migrations` to run migrations and set up the database for you
 1. Run `python manage.py run server` to start a local development server for you 
 1. Go to your browser and navigate to `127.0.0.1:8000` to access the app in your browser
