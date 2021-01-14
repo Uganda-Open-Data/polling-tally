@@ -248,7 +248,8 @@ class PollingCandidatesDataUploadView(View):
 
 class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'voting/dashboard')
+        context = {'page_title': 'Dashboard'}
+        return render(request, 'voting/dashboard.html')
 
 
 def show_all_candidates(request):

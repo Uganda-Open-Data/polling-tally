@@ -11,7 +11,7 @@ class CredsTestCate(TestCase):
         self.assertInHTML('<title>Login</title>', page_content)
 
     def test_sign_up_page_uses_correct_template(self):
-        r = self.client.get('/signup')
+        r = self.client.get('/account/register')
         page_content = r.content.decode('utf8')
         self.assertEquals(r.status_code, 200)
         self.assertTemplateUsed('signup.html')
@@ -32,7 +32,7 @@ class CredsTestCate(TestCase):
         self.assertTrue(user_exists)
 
     def test_login_page_uses_correct_template(self):
-        r = self.client.get('/login')
+        r = self.client.get('/account/login')
         page_content = r.content.decode('utf8')
         self.assertEquals(r.status_code, 200)
         self.assertTemplateUsed('login.html')
@@ -40,7 +40,7 @@ class CredsTestCate(TestCase):
 
     
     def test_reset_password_page_setup(self):
-        r = self.client.get('/reset-password')
+        r = self.client.get('/account/recover-password')
         page_content = r.content.decode('utf8')
         self.assertEquals(r.status_code, 200)
         self.assertTemplateUsed('reset-password.html')
