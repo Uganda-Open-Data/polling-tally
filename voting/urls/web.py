@@ -10,7 +10,7 @@ from voting.views.web import (
 from django.urls import path
 
 urlpatterns = [
-    path('dashboard', DashboardView.as_view(), name="dashboard"),
+    path('', DashboardView.as_view(), name="dashboard"),
     path('district', DistrictListView.as_view(), name="district-list"),
     path('district/<int:pk>/detail', DistrictDetailView.as_view(), name="district-detail"),
     path('county', CountyListView.as_view(), name="county-list"),

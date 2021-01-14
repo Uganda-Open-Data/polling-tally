@@ -246,7 +246,6 @@ class PollingCandidatesDataUploadView(View):
             print('Exception caught')
             return redirect('/candidates')
 
-
 class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'voting/dashboard')

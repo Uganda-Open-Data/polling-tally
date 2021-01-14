@@ -48,7 +48,7 @@ class UserLogin(View):
             return render(request, 'creds/login.html', context)
 
 
-def reset_password(request):
+def recover_password(request):
     form = UserPassResetForm()
     context = {'form': form}
     return render(request, 'creds/reset-password.html', context)

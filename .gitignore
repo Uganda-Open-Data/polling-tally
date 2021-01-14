@@ -155,3 +155,4 @@ dmypy.json
 coverage*
 .vscode
 .idea
+static/shutdown
