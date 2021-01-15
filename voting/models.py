@@ -61,7 +61,8 @@ class Pollingstation(BaseModel):
 
 
 class ElectionCandidates(BaseModel):
-    county = models.ForeignKey('County', on_delete=models.CASCADE)
+    district = models.ForeignKey('District', on_delete=models.CASCADE)
+    county = models.ForeignKey('County', on_delete=models.CASCADE, null=True)
     party = models.CharField(max_length=32, null=True)
     symbol = models.CharField(max_length=32, null=True)
     status = models.CharField(max_length=32, null=True)

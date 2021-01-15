@@ -1,32 +1,35 @@
 import django_filters
 from voting.models import Pollingstation, District, County, Subcounty, Parish
+from django_filters import CharFilter
 
-
-class PollingStationFilter(django_filters.FilterSet):
+class BaseFilter(django_filters.FilterSet):
+    name = CharFilter(field_name='name', lookup_expr='icontains')
+class PollingStationFilter(BaseFilter):
     class Meta:
         model = Pollingstation
         fields = ['name', 'county', 'total_voters']
 
 
-class DistrictFilter(django_filters.FilterSet):
+class DistrictFilter(BaseFilter):
+    
     class Meta:
         model = District
-        fields = ['name', 'county']
+        fields = ['name']
 
 
-class CountyFilter(django_filters.FilterSet):
+class CountyFilter(BaseFilter):
     class Meta:
         model = County
         fields = ['name', 'district']
 
 
-class SubcountyFilter(django_filters.FilterSet):
+class SubcountyFilter(BaseFilter):
     class Meta:
         model = Subcounty
         fields = ['name', 'county']
 
 
-class ParishFilter(django_filters.FilterSet):
+class ParishFilter(BaseFilter):
     class Meta:
         model = Parish
         fields = ['name', 'subcounty']

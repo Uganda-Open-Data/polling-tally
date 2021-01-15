@@ -1,5 +1,5 @@
 from voting.models import (
-    District, County, Subcounty, Parish, Pollingstation
+    District, County, Subcounty, Parish, Pollingstation, ElectionCandidates
 )
 from django.views.generic import DetailView, View
 from voting.forms import (
@@ -232,16 +232,28 @@ class PollingCandidatesDataUploadView(View):
         try:
             file = request.FILES['file']
             file_data = file.read()
-            excel_data = pd.read_excel(file_data)
+            excel_data = pd.read_excel(file_data, dtype=object)
             clean_data = excel_data.replace(np.NaN, '#')
-            print(clean_data)
             itera = 0
+            admin_user = User.objects.get(pk=1)
             for row in clean_data.values:
-                print(row)
-                print(len(row))
-                itera +=1
-                if itera == 10:
-                    break
+                category, district_name, district_code, county_name, county_code, candidate_name, party, status, symbol = row
+                if District.objects.filter(name=district_name, code=district_code).exists():
+                    district_ = District.objects.get(name=district_name, code=district_code)
+                    if County.objects.filter(name=county_name, code=county_code, district=district_).exists():
+                        county_ = County.objects.get(name=county_name, code=county_code, district=district_)
+                        if ElectionCandidates.objects.filter(name=candidate_name, category=category, district=district_, county=county_).exists():
+                            pass
+                        else:
+                            ElectionCandidates.objects.create(name=candidate_name,category=category, party=party, symbol=symbol, status=status,district=district_, county=county_, created_by=admin_user, updated_by=admin_user)
+                    else:
+                        # District Woman MPs don't have specific counties
+                        if ElectionCandidates.objects.filter(name=candidate_name, category=category, district=district_).exists():
+                            pass
+                        else:
+                            ElectionCandidates.objects.create(name=candidate_name,category=category, party=party, symbol=symbol, status=status,district=district_, created_by=admin_user, updated_by=admin_user)
+                else:
+                    print('Failed to find district ' + district_name)
         except MultiValueDictKeyError:
             print('Exception caught')
             return redirect('/candidates')
@@ -249,7 +261,7 @@ class PollingCandidatesDataUploadView(View):
 class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
         context = {'page_title': 'Dashboard'}
-        return render(request, 'voting/dashboard.html')
+        return render(request, 'voting/dashboard.html', context)
 
 
 def show_all_candidates(request):
