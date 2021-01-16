@@ -1,5 +1,7 @@
 import django_tables2 as tables
-from .models import Pollingstation, District, County, Subcounty, Parish
+from .models import (
+    Pollingstation, District, County, Subcounty, Parish, ElectionCandidate
+    )
 
 
 class BaseMetaClass:
@@ -35,3 +37,9 @@ class ParishTable(tables.Table):
     class Meta(BaseMetaClass):
         model = Parish
         fields = ['name', 'subcounty']
+
+
+class ElectionCandidateTable(tables.Table):
+    class Meta(BaseMetaClass):
+        model = ElectionCandidate
+        fields = ['name', 'category', 'county', 'district', 'party', 'symbol']

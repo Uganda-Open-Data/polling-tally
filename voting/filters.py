@@ -1,5 +1,5 @@
 import django_filters
-from voting.models import Pollingstation, District, County, Subcounty, Parish
+from voting.models import Pollingstation, District, County, Subcounty, Parish, ElectionCandidate
 from django_filters import CharFilter
 
 class BaseFilter(django_filters.FilterSet):
@@ -33,3 +33,9 @@ class ParishFilter(BaseFilter):
     class Meta:
         model = Parish
         fields = ['name', 'subcounty']
+
+class ElectionCandidateFilter(BaseFilter):
+    category = CharFilter(field_name='category', lookup_expr='icontains')
+    class Meta:
+        model = ElectionCandidate
+        fields = ['name', 'district', 'county', 'category']
