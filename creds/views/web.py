@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from creds.forms import (
     CreateUserForm, UserPassResetForm, UserLoginForm
 )
@@ -52,3 +52,8 @@ def recover_password(request):
     form = UserPassResetForm()
     context = {'form': form}
     return render(request, 'creds/reset-password.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('/accounts/login')
