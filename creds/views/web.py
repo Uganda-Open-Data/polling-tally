@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from creds.forms import (
     CreateUserForm, UserPassResetForm, UserLoginForm
 )
@@ -21,6 +21,7 @@ class UserSignUp(View):
             context = {'form': CreateUserForm(), 'sign_up_errors': form.errors}
             return render(request, 'creds/signup.html', context)
 
+        # create use if form is valid
         user = User.objects.create_user(
             form.cleaned_data.get('username'), form.cleaned_data.get('email'), form.cleaned_data.get('password1'))
         user.is_active = False
@@ -47,7 +48,12 @@ class UserLogin(View):
             return render(request, 'creds/login.html', context)
 
 
-def reset_password(request):
+def recover_password(request):
     form = UserPassResetForm()
     context = {'form': form}
     return render(request, 'creds/reset-password.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('/accounts/login')
