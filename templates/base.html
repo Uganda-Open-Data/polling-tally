@@ -20,6 +20,8 @@
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet" />
 
+
+
   <!-- Custom styles for this template-->
 
   <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet" />
@@ -41,14 +43,12 @@
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />
 
-      <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'dashboard' %}">
           <i class="fas fa-fw fa-columns"></i>
           <span>Dashboard</span></a>
       </li>
-
-      <!-- Nav Item - Pages Collapse Menu -->
+ 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
           aria-controls="collapseOne">
@@ -63,7 +63,6 @@
         </div>
       </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
           aria-controls="collapseTwo">
@@ -72,15 +71,13 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{% url 'all-candidates' %}">Candidates</a>
-            <a class="collapse-item" href="{% url 'pollingcandidate-dataupload' %}">Upload Candidates</a>
+            
             <a class="collapse-item" href="#">Agents</a>
             <a class="collapse-item" href="#">DR Forms</a>
           </div>
         </div>
       </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
           aria-controls="collapseThree">
@@ -94,7 +91,21 @@
             <a class="collapse-item" href="{% url 'subcounty-list'%}">Sub Counties</a>
             <a class="collapse-item" href="{% url 'parish-list'%}">Parishes</a>
             <a class="collapse-item" href="{% url 'pollingstation-list'%}">Polling Stations</a>
-            <a class="collapse-item" href="{% url 'pollingstation-dataupload'%}">Upload  Data</a>
+            <a class="collapse-item" href="{% url 'all-candidates' %}">Candidates</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+          aria-controls="collapseThree">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Data Upload</span>
+        </a>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'pollingstation-dataupload'%}">Polling Stations</a>
+            <a class="collapse-item" href="{% url 'pollingcandidate-dataupload' %}">Candidates</a>
           </div>
         </div>
       </li>
@@ -179,7 +190,7 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Sample User</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ request.user }}</span>
                 <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
               </a>
               <!-- Dropdown - User Information -->
@@ -255,7 +266,7 @@
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             Cancel
           </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
         </div>
       </div>
     </div>
