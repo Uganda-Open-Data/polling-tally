@@ -279,6 +279,11 @@ class DashboardView(LoginRequiredMixin, View):
         return render(request, 'voting/dashboard')
 
 
+class DashboardView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'voting/dashboard')
+
+
 def show_all_candidates(request):
     context = {'page_title': 'All Candidates'}
     return render(request, 'voting/candidates.html', context)
